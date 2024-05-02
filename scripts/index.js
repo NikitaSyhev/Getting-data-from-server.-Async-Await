@@ -53,14 +53,25 @@ window.addEventListener('DOMContentLoaded',() =>{
               hours = Math.floor((t / (1000 * 60 * 60) % 24 )),
               minutes = Math.floor((t / (1000 / 60 ) % 60)),
               seconds = Math.floor((t / 1000) % 60);
-
-        return {
-            'total': t,
-            'days': days,
-            'hours': hours,
-            'minutes': minutes,
-            'seconds': seconds,
-        };
+              //если дата прошла - выведем нули
+              if(t < 0) {
+                return {
+                    'total': 0,
+                    'days': 0,
+                    'hours': 0,
+                    'minutes': 0,
+                    'seconds': 0,
+                };
+              }
+              else {
+                return {
+                    'total': t,
+                    'days': days,
+                    'hours': hours,
+                    'minutes': minutes,
+                    'seconds': seconds,
+                };
+        }
     }
 
     //фунция добавляет ноль на тайме, если значение меньше 0 ( пример, часов 09 и т д )
@@ -99,6 +110,39 @@ window.addEventListener('DOMContentLoaded',() =>{
             }
         }
     }
-
     setClock('.timer' ,deadline);
+
+    //создание модального окна
+
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
+          modal = document.querySelector('.modal'),
+          modalClose = document.querySelector('[data-close');
+
+    //обработчик открытия модального окна
+
+    modalTrigger.forEach(btn => {
+        btn.addEventListener('click', ()=> {
+            modal.classList.add('show');
+            modal.classList.remove('hide');
+            //запретили скрол страницы при запуске модельного окна
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    //обработчик закрытия модального окна
+    modalClose.addEventListener('click', closeModal);
+    //обработчик закрытия окна при клике на подложку
+    modal.addEventListener('click',(e) => {
+        if(e.target == modal) {closeModal();}
+    })
+    //обработчик закрытия окна при клике на ESC
+    document.addEventListener('keydown',(e) => {
+        if(e.code === 'Escape' && modal.classList.contains('show')) {closeModal();}
+    });
 });
