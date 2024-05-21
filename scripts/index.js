@@ -145,7 +145,7 @@ window.addEventListener('DOMContentLoaded',() =>{
     });
 
     //вызов модального окна через определенное время
-   // const modalTimerId = setTimeout(openModal, 10000);
+    const modalTimerId = setTimeout(openModal, 10000);
 
     //вызов модального окна при скроле и удаление модельного окна
     function showModalByScroll() {
@@ -228,5 +228,39 @@ window.addEventListener('DOMContentLoaded',() =>{
         ".menu .container",
         'menu__item'
     ).render();
+
+
+    //задания
+    const students = ['Peter', 'Andrew', 'Ann', 'Mark', 'Josh', 'Sandra', 'Cris', 'Bernard', 'Takesi', 'Sam','Takesi',];
+
+    function sortStudentsByGroups(arr) {
+        arr.sort();
+        let group1 = [],
+            group2 = [],
+            group3 = [];
+        let extraStudents = '';
+        for(let i = 0; i < arr.length; ++i) {
+            if(i>= 0 && i < 3) {
+               group1[i] = arr[i];
+            }
+            if(i>= 3 && i < 6) {
+                group2[i - 3] = arr[i];
+            }
+            if(i>= 6 && i < 9) {
+                group3[i - 6] = arr[i];
+            }
+            if(i == arr.length - 1) {
+                extraStudents += `${arr[i]}`;
+            }
+            if(i >= 9 && i < (arr.length - 1)) {
+                extraStudents += `${arr[i]},` + ' ';
+            }
+         
+            
+        }
+        let finalArray = [group1, group2, group3, `Оставшиеся студенты: ${extraStudents}`];
+        return console.log(finalArray);
+    }
     
+    sortStudentsByGroups(students);
 });
