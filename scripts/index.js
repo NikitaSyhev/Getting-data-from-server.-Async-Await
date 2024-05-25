@@ -230,37 +230,71 @@ window.addEventListener('DOMContentLoaded',() =>{
     ).render();
 
 
-    //задания
-    const students = ['Peter', 'Andrew', 'Ann', 'Mark', 'Josh', 'Sandra', 'Cris', 'Bernard', 'Takesi', 'Sam','Takesi',];
+    //Forms
 
-    function sortStudentsByGroups(arr) {
-        arr.sort();
-        let group1 = [],
-            group2 = [],
-            group3 = [];
-        let extraStudents = '';
-        for(let i = 0; i < arr.length; ++i) {
-            if(i>= 0 && i < 3) {
-               group1[i] = arr[i];
-            }
-            if(i>= 3 && i < 6) {
-                group2[i - 3] = arr[i];
-            }
-            if(i>= 6 && i < 9) {
-                group3[i - 6] = arr[i];
-            }
-            if(i == arr.length - 1) {
-                extraStudents += `${arr[i]}`;
-            }
-            if(i >= 9 && i < (arr.length - 1)) {
-                extraStudents += `${arr[i]},` + ' ';
-            }
-         
-            
-        }
-        let finalArray = [group1, group2, group3, `Оставшиеся студенты: ${extraStudents}`];
-        return console.log(finalArray);
+    const forms = document.querySelectorAll('form');
+
+    //список фраз для отображения
+    const message = {
+        loading: 'Загрузка',
+        success: 'Спасибо, скоро мы с вами свяжемся',
+        failure: 'Что то пошло не так...',
     }
+
+    //ко всем формам проекта привязываем функцию postData
+    forms.forEach(item=> {
+        postData(item);
+    })
+
+   //функция постинга данных
+   function postData(form) {
+        form.addEventListener('submit', (e)=> {
+            e.preventDefault();
+            //создаем блок для вывода сообщения со статусом
+            const statusMessage =  document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.style.textAlign = 'center';
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+            //создаем request (технология AJAX)
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            // ===========отправка данных на сервер через FORMDATA===============
+          //  request.setRequestHeader('Content-type', 'multipart/form-data');
+            // const formData = new FormData(form);
+            // request.send(formData);
+            // form.reset();
+
+            // ===========отправка данных на сервер через JSON===============
+            request.setRequestHeader('Content-type', 'application/json','charset=utf-8');
+            const formData = new FormData(form);
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            })
+
+            const json = JSON.stringify(object);
+            //отправляет json на сервер
+            request.send(json);
+            //обработчик для отправки данных
+            request.addEventListener('load', ()=> {
+                if(request.status === 200) {
+                    console.log(request.response);
+                    statusMessage.textContent = message.success;
+                    //очистка формы
+                    form.reset();
+                    //удаление сообщения через 2 секунды
+                    setTimeout(()=> {
+                        statusMessage.remove();
+                    }, 2000);
+                }
+                else {
+                    statusMessage.textContent = message.failure;
+                }
+            });
+
+    });
+   } 
+
     
-    sortStudentsByGroups(students);
 });
