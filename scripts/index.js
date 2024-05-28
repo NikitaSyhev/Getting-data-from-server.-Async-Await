@@ -39,8 +39,8 @@ window.addEventListener('DOMContentLoaded',() =>{
 		}
 	});
 
-    //реалищация Таймера - установили деадлайн для таймера ( 30 мая 2024), его можно менять
-    const deadline = '2024-05-30';
+    //реалищация Таймера - установили деадлайн для таймера ( 30 июля 2024), его можно менять
+    const deadline = '2024-07-30';
 
     //функция определяет разницу между дедлайном и текущим временем 
     //возвращает объект: разница в мс, дни, часы, минуты, секунды
@@ -111,8 +111,7 @@ window.addEventListener('DOMContentLoaded',() =>{
 
     //создание модального окна
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-          modal = document.querySelector('.modal'),
-          modalClose = document.querySelector('[data-close');
+          modal = document.querySelector('.modal');
 
     //обработчик открытия модального окна
     modalTrigger.forEach(btn => {
@@ -131,12 +130,9 @@ window.addEventListener('DOMContentLoaded',() =>{
         document.body.style.overflow = '';
     }
 
-    //обработчик закрытия модального окна
-    modalClose.addEventListener('click', closeModal);
-
     //обработчик закрытия окна при клике на подложку
     modal.addEventListener('click',(e) => {
-        if(e.target == modal) {closeModal();}
+        if(e.target == modal || e.target.getAttribute('data-close') == '') {closeModal();}
     })
 
     //обработчик закрытия окна при клике на ESC
@@ -145,7 +141,7 @@ window.addEventListener('DOMContentLoaded',() =>{
     });
 
     //вызов модального окна через определенное время
-    const modalTimerId = setTimeout(openModal, 10000);
+    const modalTimerId = setTimeout(openModal, 50000);
 
     //вызов модального окна при скроле и удаление модельного окна
     function showModalByScroll() {
@@ -234,9 +230,9 @@ window.addEventListener('DOMContentLoaded',() =>{
 
     const forms = document.querySelectorAll('form');
 
-    //список фраз для отображения
+    //список фраз для отображения (на loading поставили картинку загрузки)
     const message = {
-        loading: 'Загрузка',
+        loading: 'img/form/spinner.svg',
         success: 'Спасибо, скоро мы с вами свяжемся',
         failure: 'Что то пошло не так...',
     }
@@ -251,11 +247,13 @@ window.addEventListener('DOMContentLoaded',() =>{
         form.addEventListener('submit', (e)=> {
             e.preventDefault();
             //создаем блок для вывода сообщения со статусом
-            const statusMessage =  document.createElement('div');
-            statusMessage.classList.add('status');
-            statusMessage.style.textAlign = 'center';
+            const statusMessage =  document.createElement('img');
+            statusMessage.style.cssText = `
+                display: clock;
+                margin: 0 auto;
+            `;
             statusMessage.textContent = message.loading;
-            form.append(statusMessage);
+            form.insertAdjacentElement('afterend', statusMessage);
             //создаем request (технология AJAX)
             const request = new XMLHttpRequest();
             request.open('POST', 'server.php');
@@ -280,21 +278,38 @@ window.addEventListener('DOMContentLoaded',() =>{
             request.addEventListener('load', ()=> {
                 if(request.status === 200) {
                     console.log(request.response);
-                    statusMessage.textContent = message.success;
+                    showThanksModal(message.success);            
                     //очистка формы
                     form.reset();
-                    //удаление сообщения через 2 секунды
-                    setTimeout(()=> {
-                        statusMessage.remove();
-                    }, 2000);
+                    statusMessage.remove();
                 }
                 else {
-                    statusMessage.textContent = message.failure;
+                    showThanksModal(message.failure);  
                 }
             });
-
     });
    } 
+   //создает модальное окно с сообщениями: успех или неудача загрузки
+   function showThanksModal(message) {
+    const prevModalDialog = document.querySelector('.modal__dialog');
 
-    
+    prevModalDialog.classList.add('hide');
+    openModal();
+
+    const thanksModal = document.createElement('div');
+    thanksModal.classList.add('modal__dialog');
+    thanksModal.innerHTML = `
+        <div class="modal__content">
+            <div class="modal__close" data-close>×</div>
+            <div class="modal__title">${message}</div>
+        </div>
+    `;
+    document.querySelector('.modal').append(thanksModal);
+    setTimeout(() => {
+        thanksModal.remove();
+        prevModalDialog.classList.add('show');
+        prevModalDialog.classList.remove('hide');
+        closeModal();
+    }, 4000);
+   }
 });
