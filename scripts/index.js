@@ -248,45 +248,44 @@ window.addEventListener('DOMContentLoaded',() =>{
             e.preventDefault();
             //создаем блок для вывода сообщения со статусом
             const statusMessage =  document.createElement('img');
+            statusMessage.src = message.loading;
             statusMessage.style.cssText = `
-                display: clock;
+                display: block;
                 margin: 0 auto;
             `;
-            statusMessage.textContent = message.loading;
             form.insertAdjacentElement('afterend', statusMessage);
-            //создаем request (технология AJAX)
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
-            // ===========отправка данных на сервер через FORMDATA===============
-          //  request.setRequestHeader('Content-type', 'multipart/form-data');
-            // const formData = new FormData(form);
-            // request.send(formData);
-            // form.reset();
 
-            // ===========отправка данных на сервер через JSON===============
-            request.setRequestHeader('Content-type', 'application/json','charset=utf-8');
             const formData = new FormData(form);
-            const object = {};
-            formData.forEach(function(value, key){
-                object[key] = value;
-            })
 
-            const json = JSON.stringify(object);
-            //отправляет json на сервер
-            request.send(json);
-            //обработчик для отправки данных
-            request.addEventListener('load', ()=> {
-                if(request.status === 200) {
-                    console.log(request.response);
-                    showThanksModal(message.success);            
-                    //очистка формы
-                    form.reset();
-                    statusMessage.remove();
-                }
-                else {
-                    showThanksModal(message.failure);  
-                }
-            });
+            // закомментированный код нужен, если мы данные отправляем не через formData а через JSON
+            // const object = {};
+            // formData.forEach(function(value, key){
+            //     object[key] = value;
+            // })
+
+            // const json = JSON.stringify(object);
+
+            //=================Осущесвляем отправку данных на сервер черех FETCH API=======
+
+            //создаем запрос через FETCH API
+              fetch('server.php', {
+                method: "POST",
+                // headers: {
+                //     'Content-type': 'application/json',
+                // },
+                body: formData
+            }).then(data=> {
+                data.text();
+            }).then(data=> {
+                console.log(data);
+                showThanksModal(message.success);            
+                statusMessage.remove();
+            }).catch(()=>{
+                showThanksModal(message.failure);  
+            }).finally(()=>{
+                //очистка формы
+                form.reset();
+            })
     });
    } 
    //создает модальное окно с сообщениями: успех или неудача загрузки
@@ -309,7 +308,9 @@ window.addEventListener('DOMContentLoaded',() =>{
         thanksModal.remove();
         prevModalDialog.classList.add('show');
         prevModalDialog.classList.remove('hide');
-        closeModal();
+        closeModal()
     }, 4000);
    }
+
+  
 });
