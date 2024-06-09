@@ -268,6 +268,7 @@ window.addEventListener('DOMContentLoaded',() =>{
             //=================Осущесвляем отправку данных на сервер черех FETCH API=======
 
             //создаем запрос через FETCH API
+            
               fetch('server.php', {
                 method: "POST",
                 // headers: {
@@ -312,5 +313,10 @@ window.addEventListener('DOMContentLoaded',() =>{
     }, 4000);
    }
 
-  
+
+   //подключии json server
+   fetch('http://localhost:3000/menu')
+   .then(data => data.json())
+   .then(res => console.log(res));
+   
 });

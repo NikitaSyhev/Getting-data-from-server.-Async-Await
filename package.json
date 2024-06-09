@@ -1,0 +1,22 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "Локальный сервер:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikitaSyhev/JavaScript_Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NikitaSyhev/JavaScript_Project/issues"
+  },
+  "homepage": "https://github.com/NikitaSyhev/JavaScript_Project#readme",
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.1"
+  }
+}
