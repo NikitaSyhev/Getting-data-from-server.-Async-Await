@@ -194,37 +194,25 @@ window.addEventListener('DOMContentLoaded',() =>{
         `;
         this.parent.append(element);
         }
-}
+    }
 
-    new MenuCard(
-        "img/tabs/vegy.jpg",
-        "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        9,
-        ".menu .container",
-        'menu__item',
-        'big'
-    ).render();
-    new MenuCard(
-        "img/tabs/post.jpg",
-        "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        9,
-        ".menu .container",
-        'menu__item'
-    ).render();
-    new MenuCard(
-        "img/tabs/elite.jpg",
-        "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        9,
-        ".menu .container",
-        'menu__item'
-    ).render();
+       // функция отвечает за получение данных с JSON
+       const getResource = async (url) => {
+        const res =  await fetch(url);
+        
+        if(!res.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
 
+        return  await res.json();
+    };
+
+    getResource('http://localhost:3000/menu')
+        .then(data => {
+            data.forEach(({img, altimg, title, descr, price}) => {
+                new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+            });
+        });
 
     //Forms
 
@@ -239,11 +227,24 @@ window.addEventListener('DOMContentLoaded',() =>{
 
     //ко всем формам проекта привязываем функцию postData
     forms.forEach(item=> {
-        postData(item);
+        bindPostData(item);
     })
 
+    // функция отвечает за постинг данных - используем метод создания -  function expression
+    const postData = async (url, data) => {
+        const res =  await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: data,
+        });
+        return  await res.json();
+    };
+
+
    //функция постинга данных
-   function postData(form) {
+   function bindPostData(form) {
         form.addEventListener('submit', (e)=> {
             e.preventDefault();
             //создаем блок для вывода сообщения со статусом
@@ -257,27 +258,17 @@ window.addEventListener('DOMContentLoaded',() =>{
 
             const formData = new FormData(form);
 
-            // закомментированный код нужен, если мы данные отправляем не через formData а через JSON
-            // const object = {};
-            // formData.forEach(function(value, key){
-            //     object[key] = value;
-            // })
+            //элегантный способ создать JSON из FORM DATA
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            // const json = JSON.stringify(object);
-
-            //=================Осущесвляем отправку данных на сервер черех FETCH API=======
-
-            //создаем запрос через FETCH API
+            // ================ОТПРАВКА ДАННЫХ ЧЕРЕЗ JSON==================================
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            })
             
-              fetch('server.php', {
-                method: "POST",
-                // headers: {
-                //     'Content-type': 'application/json',
-                // },
-                body: formData
-            }).then(data=> {
-                data.text();
-            }).then(data=> {
+            postData('http://localhost:3000/requests', json)
+            .then(data=> {
                 console.log(data);
                 showThanksModal(message.success);            
                 statusMessage.remove();
@@ -288,7 +279,7 @@ window.addEventListener('DOMContentLoaded',() =>{
                 form.reset();
             })
     });
-   } 
+   
    //создает модальное окно с сообщениями: успех или неудача загрузки
    function showThanksModal(message) {
     const prevModalDialog = document.querySelector('.modal__dialog');
@@ -314,9 +305,9 @@ window.addEventListener('DOMContentLoaded',() =>{
    }
 
 
-   //подключии json server
-   fetch('http://localhost:3000/menu')
-   .then(data => data.json())
-   .then(res => console.log(res));
-   
+//    //подключии json server
+//    fetch('http://localhost:3000/menu')
+//    .then(data => data.json())
+//    .then(res => console.log(res));
+}
 });
