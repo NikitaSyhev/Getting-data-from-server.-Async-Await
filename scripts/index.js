@@ -310,56 +310,135 @@ window.addEventListener('DOMContentLoaded',() =>{
           prev = document.querySelector('.offer__slider-prev'),
           next = document.querySelector('.offer__slider-next'),
           idSlide = document.querySelector('#current'),
-          idTotal = document.querySelector('#total');
+          idTotal = document.querySelector('#total'),
+          slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+          slidesField =  document.querySelector('.offer__slider-inner'),
+          width = window.getComputedStyle(slidesWrapper).width;
 
+   
     let slideIndex = 1;
+    let offset = 0;
 
-    showSlides(1);
-    showMaxNumberSlides();
+    //РЕАЛИЗАЦИЯ СЛОЖНОГО СЛАЙДЕРА
+    if(slides.length < 10) {
+        idTotal.innerHTML = `0${slides.length}`;
+        idSlide.innerHTML = `0${slideIndex}`;
+    }
+    else {
+        idTotal.innerHTML = `${slides.length}`;
+        idSlide.innerHTML = `0${slideIndex}`;
+    }
 
-    
-    //функция показа слайдов
-    function showSlides(slideIndex) {
-        if(slideIndex > slides.length) {
+
+    slidesField.style.width = 100 * slides.length + '%';
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = '0.5s all';
+
+    slidesWrapper.style.overflow = 'hidden';
+
+
+    slides.forEach(slide => {
+        slide.style.width = width;
+    });
+
+
+    next.addEventListener('click', ()=> {
+        if(offset == +width.slice(0, width.length-2) * (slides.length - 1)) {
+            offset = 0; 
+        } else {
+            offset += +width.slice(0, (width.length-2));
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if(slideIndex == slides.length) {
             slideIndex = 1;
         }
-
-        if(slideIndex < 1) {
-            slideIndex = slides.length;
+        else {
+            slideIndex++;
         }
 
-        slides.forEach(slide => slide.style.display = 'none');  
-        slides[slideIndex - 1].style.display = 'block'; 
-        if(slides.length < 10) {
+        if(slides.length < 10 ) {
             idSlide.innerHTML = `0${slideIndex}`;
         }
         else {
             idSlide.innerHTML = `${slideIndex}`;
-       
-    }
+        }
+    })
 
-    //функция отображения максимального количества слайдов
-    function showMaxNumberSlides() {
-        if(slides.length < 10) {
-            idTotal.innerHTML = `0${slides.length}`;
+    prev.addEventListener('click', ()=> {
+        if(offset == 0) {
+            offset = +width.slice(0, (width.length-2)) * (slides.length - 1)
+        } else {
+            offset -= +width.slice(0, (width.length-2));
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if(slides.length < 10 ) {
+            idSlide.innerHTML = `0${slideIndex}`;
         }
         else {
-            idTotal.innerHTML = `${slides.length}`;
+            idSlide.innerHTML = `${slideIndex}`;
         }
-    }
-    //функция изменения индекса
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-    prev.addEventListener('click', ()=> {
-        plusSlides(-1);
-    });
-    next.addEventListener('click', ()=> {
-        plusSlides(1);
-    });
+
+        if(slideIndex == 1) {
+            slideIndex = slides.length;
+        }
+        else {
+            slideIndex--;
+        }
+        
+    })
+
+
+    
+    //РЕАЛИЗАЦИЯ ПРОСТОГО СЛАЙДЕРА
+   
+    // showMaxNumberSlides();
+    // showSlides(1);
+    //функция показа слайдов
+    // function showSlides(slideIndex) {
+    //     if(slideIndex > slides.length) {
+    //         slideIndex = 1;
+    //     }
+    //     if(slideIndex < 1) {
+    //         slideIndex = slides.length;
+    //     }
+    //     slides.forEach(slide => slide.style.display = 'none');  
+    //     slides[slideIndex - 1].style.display = 'block'; 
+    //     if(slides.length < 10) {
+    //         idSlide.innerHTML = `0${slideIndex}`;
+    //     }
+    //     else {
+    //         idSlide.innerHTML = `${slideIndex}`;   
+    // }
+    // //функция отображения максимального количества слайдов
+    //  function showMaxNumberSlides() {
+    //         if(slides.length < 10) {
+    //             idTotal.innerHTML = `0${slides.length}`;
+    //         }
+    //         else {
+    //             idTotal.innerHTML = `${slides.length}`;
+    //         }
+    //     }
+    // //функция изменения индекса
+    // function plusSlides(n) {
+    //     showSlides(slideIndex += n);
+    // }
+    // prev.addEventListener('click', ()=> {
+    //     plusSlides(-1);
+    // });
+    // next.addEventListener('click', ()=> {
+    //     plusSlides(1);
+    // });
+    // }
 
 
 
-    }
+
+
+
+
 }
 });
