@@ -305,9 +305,61 @@ window.addEventListener('DOMContentLoaded',() =>{
    }
 
 
-//    //подключии json server
-//    fetch('http://localhost:3000/menu')
-//    .then(data => data.json())
-//    .then(res => console.log(res));
+    //Slider
+    const slides = document.querySelectorAll('.offer__slide'),
+          prev = document.querySelector('.offer__slider-prev'),
+          next = document.querySelector('.offer__slider-next'),
+          idSlide = document.querySelector('#current'),
+          idTotal = document.querySelector('#total');
+
+    let slideIndex = 1;
+
+    showSlides(1);
+    showMaxNumberSlides();
+
+    
+    //функция показа слайдов
+    function showSlides(slideIndex) {
+        if(slideIndex > slides.length) {
+            slideIndex = 1;
+        }
+
+        if(slideIndex < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach(slide => slide.style.display = 'none');  
+        slides[slideIndex - 1].style.display = 'block'; 
+        if(slides.length < 10) {
+            idSlide.innerHTML = `0${slideIndex}`;
+        }
+        else {
+            idSlide.innerHTML = `${slideIndex}`;
+       
+    }
+
+    //функция отображения максимального количества слайдов
+    function showMaxNumberSlides() {
+        if(slides.length < 10) {
+            idTotal.innerHTML = `0${slides.length}`;
+        }
+        else {
+            idTotal.innerHTML = `${slides.length}`;
+        }
+    }
+    //функция изменения индекса
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+    prev.addEventListener('click', ()=> {
+        plusSlides(-1);
+    });
+    next.addEventListener('click', ()=> {
+        plusSlides(1);
+    });
+
+
+
+    }
 }
 });
