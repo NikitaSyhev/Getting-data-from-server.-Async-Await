@@ -172,3 +172,32 @@ a{
 .modal__input{display:block;margin:20px auto 20px auto;width:280px;height:50px;background:#fff;box-shadow:0 4px 15px rgba(0,0,0,.2);border:none;font-size:18px;text-align:center;padding:0 20px;outline:0}
 .modal .btn{display:block;width:280px;margin:0 auto}.show{display:block}.hide{display:none}.fade{animation-name: fade;animation-duration: 1.5s;}
 @keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}
+
+.carousel-indicators {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    margin-right: 15%;
+    margin-left: 15%;
+    list-style: none;
+}
+
+.dot {
+    box-sizing: content-box;
+    flex: 0 1 auto;
+    width: 30px;
+    height: 6px;
+    margin-right: 3px;
+    margin-left: 3px;
+    cursor: pointer;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    opacity: .5;
+    transition: opacity .6s ease;
+}
