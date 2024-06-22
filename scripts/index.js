@@ -39,19 +39,19 @@ window.addEventListener('DOMContentLoaded',() =>{
 		}
 	});
 
-    //реалищация Таймера - установили деадлайн для таймера ( 30 июля 2024), его можно менять
+    //реализация Таймера - установили деадлайн для таймера ( 30 июля 2024), его можно менять
     const deadline = '2024-07-30';
 
     //функция определяет разницу между дедлайном и текущим временем 
     //возвращает объект: разница в мс, дни, часы, минуты, секунды
-    function getTimeRemaining(endtime) {
-        const t = Date.parse(endtime) - Date.parse(new Date()),
-              days = Math.floor(t / (1000 * 60 * 60 * 24)),
-              hours = Math.floor((t / (1000 * 60 * 60) % 24 )),
-              minutes = Math.floor((t / (1000 / 60 ) % 60)),
-              seconds = Math.floor((t / 1000) % 60);
+    function getTimeRemaining(deadline) {
+        const timeRemain = Date.parse(deadline) - Date.parse(new Date()),
+              days = Math.floor(timeRemain / (1000 * 60 * 60 * 24)),
+              hours = Math.floor((timeRemain / (1000 * 60 * 60) % 24 )),
+              minutes = Math.floor((timeRemain / (1000 / 60 ) % 60)),
+              seconds = Math.floor((timeRemain / 1000) % 60);
               //если дата прошла - выведем нули
-              if(t < 0) {
+              if(timeRemain < 0) {
                 return {
                     'total': 0,
                     'days': 0,
@@ -62,7 +62,7 @@ window.addEventListener('DOMContentLoaded',() =>{
               }
               else {
                 return {
-                    'total': t,
+                    'total': timeRemain,
                     'days': days,
                     'hours': hours,
                     'minutes': minutes,
@@ -96,18 +96,50 @@ window.addEventListener('DOMContentLoaded',() =>{
 
     //функция обновления таймера на странице
     function updateClock() {
-            const t = getTimeRemaining(deadline);
-            days.innerHTML = getZero(t.days);
-            hours.innerHTML = getZero(t.hours);
-            minutes.innerHTML = getZero(t.minutes);
-            seconds.innerHTML = getZero(t.seconds);
+            const timeRemain = getTimeRemaining(deadline);
+            days.innerHTML = getZero(timeRemain.days);
+            hours.innerHTML = getZero(timeRemain.hours);
+            minutes.innerHTML = getZero(timeRemain.minutes);
+            seconds.innerHTML = getZero(timeRemain.seconds);
             //условие остановки таймера   
-            if(t.total <= 0) {
+            if(timeRemain.total <= 0) {
                 clearInterval(timeInterval);
             }
         }
     }
     setClock('.timer' ,deadline);
+
+    //функция обновляет инфо о дедлайне акции исходя из переменной deadline
+    function monthToScreen(deadline) {
+        let monthDeadline = '';
+        let dateFunc = new Date(deadline);
+        switch(dateFunc.getMonth()) {
+            case 0: monthDeadline = 'января';break;
+            case 1: monthDeadline = 'февраля';break; 
+            case 2: monthDeadline = 'марта';break;
+            case 3: monthDeadline = 'апреля';break; 
+            case 4: monthDeadline = 'мая';break; 
+            case 5: monthDeadline = 'июня';break;
+            case 6: monthDeadline = 'июля';break; 
+            case 7: monthDeadline = 'августа';break; 
+            case 8: monthDeadline = 'сентября';break; 
+            case 9: monthDeadline = 'октября';break; 
+            case 10: monthDeadline = 'ноября';break; 
+            case 11: monthDeadline = 'декабря';break;  
+        }
+        return monthDeadline;
+    }
+
+    const setDeadlineToPage = document.querySelector('.promotion__descr');
+    let date = new Date(deadline);
+    setDeadlineToPage.innerHTML = `
+                <div>
+                    Мы ценим каждого клиента и предлагаем вам стать одним из них на очень выгодных условиях. 
+                    Каждому, кто закажет доставку питание на неделю, будет предоставлена скидка в размере <span>20%!</span>
+                    <br><br>
+                    Акция закончится ${date.getDate()} ${monthToScreen(deadline)} в 00:00
+                </div>
+    `
 
     //создание модального окна
     const modalTrigger = document.querySelectorAll('[data-modal]'),
@@ -474,6 +506,9 @@ window.addEventListener('DOMContentLoaded',() =>{
     //     plusSlides(1);
     // });
     // }
+
+
+
 
 
 
