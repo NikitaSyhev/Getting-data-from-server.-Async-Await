@@ -632,11 +632,25 @@ window.addEventListener('DOMContentLoaded',() =>{
     
 
 
-
+  
   
 
 
 
 
 }
+
+function stray(numbers) {
+    let num = numbers[0];
+    
+for(let el of numbers) {
+    if(num != el) {
+        num = el;
+    }
+    else continue;
+}
+    return num;
+  }
+
+console.log(stray([17, 17, 3, 17, 17, 17, 17]));
 });
