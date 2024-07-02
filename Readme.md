@@ -5,7 +5,7 @@
 ```
 MAMP
 ```
-Стек:
+### Стек:
 ```
 HTML&&CSS
 JAVA SCRIPT 
