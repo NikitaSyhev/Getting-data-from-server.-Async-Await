@@ -11,6 +11,18 @@ HTML&&CSS
 JAVA SCRIPT 
 AJAX
 FETCH API
+WebPack
+JSON Server
+```
+
+### Запуск WebPack:
+```
+npx webpack
+```
+
+### Запуск JSON сервера:
+```
+json-server db.json
 ```
 
 ### Пример кода
