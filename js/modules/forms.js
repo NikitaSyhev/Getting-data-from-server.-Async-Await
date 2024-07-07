@@ -1,7 +1,10 @@
-function forms() {
+import { closeModal, openModal } from "./modal";
+import { postData } from "../services/services";
+
+function forms(formSelector, modalTimerId) {
 //Forms
 
-const forms = document.querySelectorAll('form');
+const forms = document.querySelectorAll(formSelector);
 
 //список фраз для отображения (на loading поставили картинку загрузки)
 const message = {
@@ -14,19 +17,6 @@ const message = {
 forms.forEach(item=> {
     bindPostData(item);
 })
-
-// функция отвечает за постинг данных - используем метод создания -  function expression
-const postData = async (url, data) => {
-    const res =  await fetch(url, {
-        method: "POST",
-        headers: {
-            'Content-type': 'application/json',
-        },
-        body: data,
-    });
-    return  await res.json();
-};
-
 
 //функция постинга данных
 function bindPostData(form) {
@@ -63,8 +53,32 @@ function bindPostData(form) {
             //очистка формы
             form.reset();
         })
-});
-}
+    });
+    }
+
+    //создает модальное окно с сообщениями: успех или неудача загрузки
+    function showThanksModal(message) {
+        const prevModalDialog = document.querySelector('.modal__dialog');
+
+        prevModalDialog.classList.add('hide');
+        openModal('.modal', modalTimerId);
+
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML = `
+            <div class="modal__content">
+                <div class="modal__close" data-close>×</div>
+                <div class="modal__title">${message}</div>
+            </div>
+        `;
+        document.querySelector('.modal').append(thanksModal);
+        setTimeout(() => {
+            thanksModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            closeModal('.modal')
+        }, 4000);
+    }
 }
 
-module.exports = forms;
+export default forms;

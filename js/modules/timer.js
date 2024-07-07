@@ -1,6 +1,4 @@
-function timer() {
-    //реализация Таймера - установили деадлайн для таймера ( 30 июля 2024), его можно менять
-    const deadline = '2024-07-30';
+function timer(id, deadline) {
 
     //функция определяет разницу между дедлайном и текущим временем 
     //возвращает объект: разница в мс, дни, часы, минуты, секунды
@@ -42,7 +40,7 @@ function timer() {
     }
  
     // фунция установки таймера на страницу
-    function setClock(selector, endtime) {
+    function setClock(selector, deadline) {
          const timer = document.querySelector(selector),
                days = timer.querySelector('#days'),
                hours = timer.querySelector('#hours'),
@@ -67,7 +65,7 @@ function timer() {
              }
          }
     }
-    setClock('.timer' ,deadline);
+    setClock(id ,deadline);
  
     //функция обновляет инфо о дедлайне акции исходя из переменной deadline
     function monthToScreen(deadline) {
@@ -102,4 +100,4 @@ function timer() {
     `
 }
 
-module.exports = timer;
+export default timer;

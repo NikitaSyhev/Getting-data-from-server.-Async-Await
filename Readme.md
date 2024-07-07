@@ -1,4 +1,4 @@
-### JS Project
+## WebSite with scripts
 
 Локальный сервер:
 
@@ -23,6 +23,37 @@ npx webpack
 ### Запуск JSON сервера:
 ```
 json-server db.json
+```
+
+### Если не хватает прав на запуск JSON Server ( ошибка:  Ошибка безопасности: (:) [], PSSecurityException ):
+
+Запусть Power Shell Windows  в папке проекта (Shift + правая кнопка мыши)
+```
+Set-ExecutionPolicy -Scope CurrentUser
+Unrestricted 
+Y
+```
+В терминале IDE запускаем json: 
+```
+json-server db.json
+```
+В Power Shell:
+```
+Set-ExecutionPolicy -Scope CurrentUser
+Restricted 
+Y
+```
+
+### Проект содержит модули:
+```
+calc: калькулятор калорий
+cards: карточки товаров 
+forms: работа с формами
+modal: логика работы модальных окон
+slider: логика работы слайдера
+tabs: табы, переключатели
+timer: настройка таймера
+services: сервисы - отправка и получение данных с сервера 
 ```
 
 ### Пример кода

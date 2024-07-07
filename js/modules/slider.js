@@ -1,13 +1,13 @@
-function slider () {
+function slider ({container, slide, nextArrow, prevArrow, totalCounter, currentCouner, wrapper, field}) {
      //Slider
-     const slides = document.querySelectorAll('.offer__slide'),
-     slider = document.querySelector('.offer__slider'),
-     prev = document.querySelector('.offer__slider-prev'),
-     next = document.querySelector('.offer__slider-next'),
-     idSlide = document.querySelector('#current'),
-     idTotal = document.querySelector('#total'),
-     slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-     slidesField =  document.querySelector('.offer__slider-inner'),
+     const slides = document.querySelectorAll(slide),
+     slider = document.querySelector(container),
+     prev = document.querySelector(prevArrow),
+     next = document.querySelector(nextArrow),
+     idSlide = document.querySelector(currentCouner),
+     idTotal = document.querySelector(totalCounter),
+     slidesWrapper = document.querySelector(wrapper),
+     slidesField =  document.querySelector(field),
      width = window.getComputedStyle(slidesWrapper).width;
 
 
@@ -129,4 +129,4 @@ function addOpacityToDots() {
 
 }
 
-module.exports = slider;
+export default slider;

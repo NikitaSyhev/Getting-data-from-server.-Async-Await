@@ -114,4 +114,4 @@ function calc() {
         getDynamicInformation('#weight');
 }
 
-module.exports = calc;
+export default calc;

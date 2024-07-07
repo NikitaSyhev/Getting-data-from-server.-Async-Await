@@ -170,7 +170,10 @@ a{
 .modal__close{position:absolute;top:8px;right:14px;font-size:30px;color:#000;opacity:.5;font-weight:700;border:none;background-color:transparent;cursor:pointer}
 .modal__title{text-align:center;font-size:22px;text-transform:uppercase}
 .modal__input{display:block;margin:20px auto 20px auto;width:280px;height:50px;background:#fff;box-shadow:0 4px 15px rgba(0,0,0,.2);border:none;font-size:18px;text-align:center;padding:0 20px;outline:0}
-.modal .btn{display:block;width:280px;margin:0 auto}.show{display:block}.hide{display:none}.fade{animation-name: fade;animation-duration: 1.5s;}
+.modal .btn{display:block;width:280px;margin:0 auto}
+.show{display:block}
+.hide{display:none}
+.fade{animation-name: fade;animation-duration: 1.5s;}
 @keyframes fade{from{opacity: 0.1;}to{opacity: 1;}}
 
 .carousel-indicators {
