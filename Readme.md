@@ -44,6 +44,28 @@ Restricted
 Y
 ```
 
+### Установка Babel:
+```
+npm install --save-dev @babel/core @babel/cli @babel/preset-env
+npm install --save @babel/polyfill
+npm i --save-dev babel-loader
+```
+
+### Установка Core.js:
+```
+npm i --save-dev core-js
+```
+
+### Установка ES6 Promises:
+```
+npm install es6-promise-polyfill
+```
+
+### Установка Nodelist polyfill:
+```
+npm i nodelist-foreach-polyfill
+```
+
 ### Проект содержит модули:
 ```
 calc: калькулятор калорий
