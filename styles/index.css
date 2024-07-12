@@ -10,6 +10,10 @@ a{
     text-decoration:none;
 }
 
+.logo {
+    height: 200px;
+}
+
 .btn{
     width:220px;
     height:65px;
